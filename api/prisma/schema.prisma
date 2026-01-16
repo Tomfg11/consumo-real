@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Provider {
+  id        String   @id @default(uuid())
+  name      String
+  type      String
+  tariffs   Tariff[]
+}
+
+model Tariff {
+  id          String  @id @default(uuid())
+  providerId  String
+  provider    Provider @relation(fields: [providerId], references: [id])
+  minUsage    Int
+  maxUsage    Int?
+  rate        Float
+  fixedFee    Float
+}
