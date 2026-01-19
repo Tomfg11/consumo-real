@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3333';
+
 export function useCalculator() {
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,7 @@ export function useCalculator() {
 
   // Busca provedores ao iniciar
   useEffect(() => {
-    axios.get('http://localhost:3333/providers')
+    axios.get(`${API_URL}/providers`)
       .then(res => setProviders(res.data))
       .catch(err => console.error("Erro API:", err));
   }, []);
@@ -47,7 +49,7 @@ export function useCalculator() {
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3333/calculate', {
+      const response = await axios.post(`${API_URL}/calculate`, {
         providerId: provider.id,
         current: currentReadings.current,
         previous: currentReadings.previous,
